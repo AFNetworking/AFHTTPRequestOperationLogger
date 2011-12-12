@@ -103,17 +103,17 @@
             case AFLoggerLevelInfo:
             case AFLoggerLevelWarn:
             case AFLoggerLevelError:
-                NSLog(@"[Error] %@ '%@' (%ld): %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], [operation.response statusCode], operation.error);
+                NSLog(@"[Error] %@ '%@' (%ld): %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], operation.error);
             default:
                 break;
         }
     } else {
         switch (self.level) {
             case AFLoggerLevelDebug:
-                NSLog(@"%ld '%@': %@", [operation.response statusCode], [[operation.response URL] absoluteString], operation.responseString);
+                NSLog(@"%ld '%@': %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], operation.responseString);
                 break;
             case AFLoggerLevelInfo:
-                NSLog(@"%ld '%@'", [operation.response statusCode], [[operation.response URL] absoluteString]);
+                NSLog(@"%ld '%@'", (long)[operation.response statusCode], [[operation.response URL] absoluteString]);
                 break;
             default:
                 break;
