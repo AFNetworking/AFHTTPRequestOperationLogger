@@ -9,7 +9,7 @@ This is still in early stages of development, so proceed with caution when using
 Add the following code to `AppDelegate.m -application:didFinishLaunchingWithOptions:`:
 
 ``` objective-c
-[[AFNetworkLogger sharedLogger] startLogging];
+[[AFHTTPRequestOperationLogger sharedLogger] startLogging];
 ```
 
 Now all `AFHTTPRequestOperation` will have their request and response logged to the console, a la:
@@ -22,7 +22,7 @@ GET http://example.com/foo/bar.json
 If the default logging level is too verbose—say, if you only want to know when requests fail, then changing it is as simple as:
 
 ``` objective-c
-[[AFNetworkLogger sharedLogger] setLevel:AFLoggerLevelError];
+[[AFHTTPRequestOperationLogger sharedLogger] setLevel:AFLoggerLevelError];
 ```
 
 ## Contact
