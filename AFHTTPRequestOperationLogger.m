@@ -29,11 +29,10 @@
 + (AFHTTPRequestOperationLogger *)sharedLogger {
     static AFHTTPRequestOperationLogger *_sharedLogger = nil;
 
-    if (!_sharedLogger) {
-        @synchronized(self) {
-            _sharedLogger = [[self alloc] init];
-        }
-    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedLogger = [[self alloc] init];
+    });
 
   return _sharedLogger;
 }
