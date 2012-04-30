@@ -74,7 +74,7 @@
 
   NSString *body = nil;
   if ([operation.request HTTPBody]) {
-    body = [NSString stringWithUTF8String:[[operation.request HTTPBody] bytes]];
+    body = body = [[[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding] autorelease];
   }
 
   switch (self.level) {
@@ -109,7 +109,7 @@
     } else {
         switch (self.level) {
             case AFLoggerLevelDebug:
-                NSLog(@"%ld '%@': %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], operation.responseString);
+                NSLog(@"%ld '%@': %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString],operation.response.allHTTPHeaderFields, operation.responseString);
                 break;
             case AFLoggerLevelInfo:
                 NSLog(@"%ld '%@'", (long)[operation.response statusCode], [[operation.response URL] absoluteString]);
