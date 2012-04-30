@@ -74,7 +74,7 @@
 
   NSString *body = nil;
   if ([operation.request HTTPBody]) {
-    body = [NSString stringWithUTF8String:[[operation.request HTTPBody] bytes]];
+    body = body = [[[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding] autorelease];
   }
 
   switch (self.level) {
