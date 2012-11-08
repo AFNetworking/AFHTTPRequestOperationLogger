@@ -44,6 +44,8 @@
     }
 
     self.level = AFLoggerLevelInfo;
+    self.logRequest = YES;
+    self.logResponse = YES;
 
     return self;
 }
@@ -68,7 +70,7 @@
 - (void)HTTPOperationDidStart:(NSNotification *)notification {
   AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
-    if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+    if (!self.logRequest || ![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
         return;
     }
 
@@ -92,7 +94,7 @@
 - (void)HTTPOperationDidFinish:(NSNotification *)notification {
   AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
-    if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+    if (!self.logResponse || ![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
         return;
     }
 

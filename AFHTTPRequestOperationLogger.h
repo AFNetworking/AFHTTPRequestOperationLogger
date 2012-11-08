@@ -37,6 +37,8 @@ typedef enum {
 }
 
 @property (nonatomic, assign) AFHTTPRequestLoggerLevel level;
+@property (nonatomic, assign) BOOL logRequest;
+@property (nonatomic, assign) BOOL logResponse;
 
 + (AFHTTPRequestOperationLogger *)sharedLogger;
 
