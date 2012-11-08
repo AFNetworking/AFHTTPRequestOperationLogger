@@ -68,7 +68,7 @@
 - (void)HTTPOperationDidStart:(NSNotification *)notification {
   AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
-    if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+    if (![operation isKindOfClass:[AFHTTPRequestOperation class]] || (self.shouldLogOperation && !self.shouldLogOperation(operation))) {
         return;
     }
 
@@ -92,7 +92,7 @@
 - (void)HTTPOperationDidFinish:(NSNotification *)notification {
   AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
-    if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+    if (![operation isKindOfClass:[AFHTTPRequestOperation class]] || (self.shouldLogOperation && !self.shouldLogOperation(operation))) {
         return;
     }
 
