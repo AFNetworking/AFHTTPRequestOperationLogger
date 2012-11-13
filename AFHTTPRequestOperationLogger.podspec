@@ -8,5 +8,5 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/AFNetworking/AFHTTPRequestOperationLogger.git', :tag => '0.9.0' }
   s.source_files = 'AFHTTPRequestOperationLogger.{h,m}'
   
-  s.dependency 'AFNetworking', '0.9.0'
+  s.dependency 'AFNetworking', '>= 0.9.0'
 end
