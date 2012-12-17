@@ -31,6 +31,7 @@
 
 @implementation AFHTTPRequestOperationLogger
 @synthesize level = _level;
+@synthesize filterPredicate = _filterPredicate;
 
 + (AFHTTPRequestOperationLogger *)sharedLogger {
     static AFHTTPRequestOperationLogger *_sharedLogger = nil;
@@ -78,6 +79,10 @@ static void *AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
         return;
     }
     
+    if (self.filterPredicate && [self.filterPredicate evaluateWithObject:operation]) {
+        return;
+    }
+    
     objc_setAssociatedObject(operation, AFHTTPRequestOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     NSString *body = nil;
@@ -101,6 +106,10 @@ static void *AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
     AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
     
     if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+        return;
+    }
+    
+    if (self.filterPredicate && [self.filterPredicate evaluateWithObject:operation]) {
         return;
     }
     
