@@ -23,6 +23,11 @@
 #import "AFHTTPRequestOperationLogger.h"
 #import "AFHTTPRequestOperation.h"
 
+#if !__has_feature(objc_arc)
+#error AFHTTPRequestOperationLogger must be built with ARC.
+// You can turn on ARC for only AFHTTPRequestOperationLogger files by adding -fobjc-arc to the build phase for each of its files.
+#endif
+
 @implementation AFHTTPRequestOperationLogger
 @synthesize level = _level;
 
@@ -50,8 +55,6 @@
 
 - (void)dealloc {
   [self stopLogging];
-
-  [super dealloc];
 }
 
 - (void)startLogging {
@@ -74,7 +77,7 @@
 
   NSString *body = nil;
   if ([operation.request HTTPBody]) {
-    body = [[[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding] autorelease];
+    body = [[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding];
   }
 
   switch (self.level) {
