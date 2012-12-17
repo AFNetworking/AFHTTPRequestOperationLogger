@@ -31,10 +31,7 @@ typedef enum {
   AFLoggerLevelFatal = AFLoggerLevelOff,
 } AFHTTPRequestLoggerLevel;
 
-@interface AFHTTPRequestOperationLogger : NSObject {
-@private
-	AFHTTPRequestLoggerLevel _level;
-}
+@interface AFHTTPRequestOperationLogger : NSObject
 
 @property (nonatomic, assign) AFHTTPRequestLoggerLevel level;
 
