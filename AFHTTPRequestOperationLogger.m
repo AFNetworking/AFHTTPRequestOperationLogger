@@ -22,6 +22,7 @@
 
 #import "AFHTTPRequestOperationLogger.h"
 #import "AFHTTPRequestOperation.h"
+#import <objc/runtime.h>
 
 #if !__has_feature(objc_arc)
 #error AFHTTPRequestOperationLogger must be built with ARC.
@@ -68,12 +69,16 @@
 
 #pragma mark - NSNotification
 
+static void *AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
+
 - (void)HTTPOperationDidStart:(NSNotification *)notification {
   AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
 
     if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
         return;
     }
+    
+    objc_setAssociatedObject(operation, AFHTTPRequestOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
   NSString *body = nil;
   if ([operation.request HTTPBody]) {
@@ -98,6 +103,8 @@
     if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
         return;
     }
+    
+    NSTimeInterval elapsedTime = 1000 * [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(operation, AFHTTPRequestOperationStartDate)];
 
     if (operation.error) {
         switch (self.level) {
@@ -105,17 +112,17 @@
             case AFLoggerLevelInfo:
             case AFLoggerLevelWarn:
             case AFLoggerLevelError:
-                NSLog(@"[Error] %@ '%@' (%ld): %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], operation.error);
+                NSLog(@"[Error] %@ '%@' (%ld) [%.0f ms]: %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], elapsedTime, operation.error);
             default:
                 break;
         }
     } else {
         switch (self.level) {
             case AFLoggerLevelDebug:
-                NSLog(@"%ld '%@': %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], [operation.response allHeaderFields], operation.responseString);
+                NSLog(@"%ld '%@' [%.0f ms]: %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime, [operation.response allHeaderFields], operation.responseString);
                 break;
             case AFLoggerLevelInfo:
-                NSLog(@"%ld '%@'", (long)[operation.response statusCode], [[operation.response URL] absoluteString]);
+                NSLog(@"%ld '%@' [%.0f ms]", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime);
                 break;
             default:
                 break;
