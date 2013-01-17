@@ -79,11 +79,11 @@ static void *AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
         return;
     }
     
+    objc_setAssociatedObject(operation, AFHTTPRequestOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
     if (self.filterPredicate && [self.filterPredicate evaluateWithObject:operation]) {
         return;
     }
-    
-    objc_setAssociatedObject(operation, AFHTTPRequestOperationStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     NSString *body = nil;
     if ([operation.request HTTPBody]) {
