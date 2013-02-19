@@ -29,6 +29,12 @@
 // You can turn on ARC for only AFHTTPRequestOperationLogger files by adding -fobjc-arc to the build phase for each of its files.
 #endif
 
+@interface AFHTTPRequestOperationLogger ()
+
+@property (nonatomic, assign, getter = isLogging) BOOL logging;
+
+@end
+
 @implementation AFHTTPRequestOperationLogger
 @synthesize level = _level;
 @synthesize filterPredicate = _filterPredicate;
@@ -60,12 +66,22 @@
 }
 
 - (void)startLogging {
+    if (self.isLogging) {
+        return;
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HTTPOperationDidStart:) name:AFNetworkingOperationDidStartNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HTTPOperationDidFinish:) name:AFNetworkingOperationDidFinishNotification object:nil];
+
+    self.logging = YES;
 }
 
 - (void)stopLogging {
+    if (self.isLogging == NO) {
+        return;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    self.logging = NO;
 }
 
 #pragma mark - NSNotification
