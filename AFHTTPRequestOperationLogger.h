@@ -23,7 +23,41 @@
 #import <Foundation/Foundation.h>
 
 /**
+ The following constants are provided by `AFHTTPRequestOperationLogger` as possible options to set verbosity level.
+ The default option is `AFLoggerLevelInfo`.
  
+ enum {
+    AFLoggerLevelOff,
+    AFLoggerLevelDebug,
+    AFLoggerLevelInfo,
+    AFLoggerLevelWarn,
+    AFLoggerLevelError,
+    AFLoggerLevelFatal = AFLoggerLevelOff,
+ }
+
+ `AFLoggerLevelOff`
+    Turns off any logging
+
+ `AFLoggerLevelDebug`
+    Shows HTTP header and body for request and response in addition to `AFLoggerLevelInfo` verbose level.
+
+ `AFLoggerLevelInfo`
+    Default verbose level. Logs request and response to the console like this:
+
+    ```
+    GET http://example.com/foo/bar.json
+    200 http://example.com/foo/bar.json
+    ```
+
+ `AFLoggerLevelWarn`
+    Only warn when error occured
+
+ `AFLoggerLevelError`
+    By far the same as `AFLoggerLevelWarn`
+
+ `AFLoggerLevelFatal`
+    Same as `AFLoggerLevelOff`
+
  */
 typedef enum {
   AFLoggerLevelOff,
@@ -35,32 +69,34 @@ typedef enum {
 } AFHTTPRequestLoggerLevel;
 
 /**
- 
+AFHTTPRequestOperationLogger is an extension for [AFNetworking](http://github.com/AFNetworking/AFNetworking/) that logs HTTP requests as they are sent and received.
  */
 @interface AFHTTPRequestOperationLogger : NSObject
 
 /**
- 
+ Verbosity level. Default is `AFLoggerLevelInfo`.
  */
 @property (nonatomic, assign) AFHTTPRequestLoggerLevel level;
 
 /**
- 
+ Predicate object which is used to ignore any operation that matches the provided criteria.
+
+ Pass predicate object, which will be used to ignore any operation that matches the provided criteria and allow all through if no predicate is passed. Predicate is evaluated agains `AFHTTPRequestOperation` object. Default is `nil`.
  */
 @property (nonatomic, strong) NSPredicate *filterPredicate;
 
 /**
- 
+ Returns the shared operation logger object.
  */
 + (AFHTTPRequestOperationLogger *)sharedLogger;
 
 /**
- 
+ Starts loggin HTTP requests which are performed by `AFHTTPRequestOperation` objects.
  */
 - (void)startLogging;
 
 /**
- 
+ Stops loggin HTTP requests which are performed by `AFHTTPRequestOperation` objects.
  */
 - (void)stopLogging;
 
