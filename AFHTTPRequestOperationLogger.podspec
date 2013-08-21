@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.source_files = 'AFHTTPRequestOperationLogger.{h,m}'
   s.requires_arc = true
 
-  s.dependency 'AFNetworking', '~> 1.3'
+  s.dependency 'AFNetworking', '~> 1.0'
 end
