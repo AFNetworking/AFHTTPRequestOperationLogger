@@ -24,16 +24,9 @@
 #import "AFHTTPRequestOperation.h"
 #import <objc/runtime.h>
 
-#if !__has_feature(objc_arc)
-#error AFHTTPRequestOperationLogger must be built with ARC.
-// You can turn on ARC for only AFHTTPRequestOperationLogger files by adding -fobjc-arc to the build phase for each of its files.
-#endif
-
 @implementation AFHTTPRequestOperationLogger
-@synthesize level = _level;
-@synthesize filterPredicate = _filterPredicate;
 
-+ (AFHTTPRequestOperationLogger *)sharedLogger {
++ (instancetype)sharedLogger {
     static AFHTTPRequestOperationLogger *_sharedLogger = nil;
     
     static dispatch_once_t onceToken;

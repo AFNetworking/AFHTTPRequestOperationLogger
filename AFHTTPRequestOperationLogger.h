@@ -35,7 +35,7 @@ typedef enum {
 } AFHTTPRequestLoggerLevel;
 
 /**
- 
+ AFHTTPRequestOperation 
  */
 @interface AFHTTPRequestOperationLogger : NSObject
 
@@ -52,7 +52,7 @@ typedef enum {
 /**
  
  */
-+ (AFHTTPRequestOperationLogger *)sharedLogger;
++ (instancetype)sharedLogger;
 
 /**
  
