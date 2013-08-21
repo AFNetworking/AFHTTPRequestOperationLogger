@@ -104,3 +104,4 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestLoggerLevel) {
 
  `AFLoggerLevelFatal`
  Equivalent to `AFLoggerLevelOff`
+ */
