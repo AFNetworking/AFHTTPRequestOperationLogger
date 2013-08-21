@@ -22,6 +22,7 @@
 
 #import "AFHTTPRequestOperationLogger.h"
 #import "AFHTTPRequestOperation.h"
+
 #import <objc/runtime.h>
 
 @implementation AFHTTPRequestOperationLogger
@@ -65,7 +66,7 @@
 
 #pragma mark - NSNotification
 
-static void *AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
+static void * AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate;
 
 - (void)HTTPOperationDidStart:(NSNotification *)notification {
     AFHTTPRequestOperation *operation = (AFHTTPRequestOperation *)[notification object];
