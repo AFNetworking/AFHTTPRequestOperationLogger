@@ -1,6 +1,8 @@
 # AFHTTPRequestOperationLogger
 
-`AFHTTPRequestOperationLogger` is an extension for [AFNetworking](http://github.com/AFNetworking/AFNetworking/) that logs HTTP requests as they are sent and received.
+`AFHTTPRequestOperationLogger` is an extension for [AFNetworking 1.x](http://github.com/AFNetworking/AFNetworking/) that logs HTTP requests as they are sent and received.
+
+### If you are looking for an AFNetworking 2-compatible logger, check out [AFNetworkActivityLogger](https://github.com/AFNetworking/AFNetworkActivityLogger)
 
 > `AFHTTPRequestOperationLogger` listens for `AFNetworkingOperationDidStartNotification` and `AFNetworkingOperationDidFinishNotification` notifications, which are posted by AFNetworking as request operations are started and finish. For further customization of logging output, users are encouraged to implement desired functionality by listening for these notifications.
 
