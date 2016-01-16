@@ -27,6 +27,8 @@
 
 @implementation AFHTTPRequestOperationLogger
 
+@synthesize delegate = _delegate;
+
 + (instancetype)sharedLogger {
     static AFHTTPRequestOperationLogger *_sharedLogger = nil;
     
@@ -85,17 +87,18 @@ static void * AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate
     if ([operation.request HTTPBody]) {
         body = [[NSString alloc] initWithData:[operation.request HTTPBody] encoding:NSUTF8StringEncoding];
     }
-    
+    NSString* logString;
     switch (self.level) {
         case AFLoggerLevelDebug:
-            NSLog(@"%@ '%@': %@ %@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], [operation.request allHTTPHeaderFields], body);
+            logString = [NSString stringWithFormat:@"%@ '%@': %@ %@", [operation.request HTTPMethod], [[operation.request URL] absoluteString], [operation.request allHTTPHeaderFields], body];
             break;
         case AFLoggerLevelInfo:
-            NSLog(@"%@ '%@'", [operation.request HTTPMethod], [[operation.request URL] absoluteString]);
+            logString = [NSString stringWithFormat:@"%@ '%@'", [operation.request HTTPMethod], [[operation.request URL] absoluteString]];
             break;
         default:
             break;
     }
+    if (!_delegate) NSLog(@"%@", logString); else [_delegate AFHTTPRequestOperationLoggerLog:logString];
 }
 
 - (void)HTTPOperationDidFinish:(NSNotification *)notification {
@@ -111,28 +114,31 @@ static void * AFHTTPRequestOperationStartDate = &AFHTTPRequestOperationStartDate
     
     NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(operation, AFHTTPRequestOperationStartDate)];
     
+    NSString* logString;
+    
     if (operation.error) {
         switch (self.level) {
             case AFLoggerLevelDebug:
             case AFLoggerLevelInfo:
             case AFLoggerLevelWarn:
             case AFLoggerLevelError:
-                NSLog(@"[Error] %@ '%@' (%ld) [%.04f s]: %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], elapsedTime, operation.error);
+                logString = [NSString stringWithFormat:@"[Error] %@ '%@' (%ld) [%.04f s]: %@", [operation.request HTTPMethod], [[operation.response URL] absoluteString], (long)[operation.response statusCode], elapsedTime, operation.error];
             default:
                 break;
         }
     } else {
         switch (self.level) {
             case AFLoggerLevelDebug:
-                NSLog(@"%ld '%@' [%.04f s]: %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime, [operation.response allHeaderFields], operation.responseString);
+                logString = [NSString stringWithFormat:@"%ld '%@' [%.04f s]: %@ %@", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime, [operation.response allHeaderFields], operation.responseString];
                 break;
             case AFLoggerLevelInfo:
-                NSLog(@"%ld '%@' [%.04f s]", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime);
+                logString = [NSString stringWithFormat:@"%ld '%@' [%.04f s]", (long)[operation.response statusCode], [[operation.response URL] absoluteString], elapsedTime];
                 break;
             default:
                 break;
         }
     }
+    if (!_delegate) NSLog(@"%@", logString); else [_delegate AFHTTPRequestOperationLoggerLog:logString];
 }
 
 @end
