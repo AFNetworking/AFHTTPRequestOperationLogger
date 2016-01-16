@@ -31,15 +31,32 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestLoggerLevel) {
   AFLoggerLevelFatal = AFLoggerLevelOff,
 };
 
+
+/**
+ Protocol for delegate to be informed of AFHTTPRequestOperation status. Must implement method -(void)AFHTTPRequestOperationLoggerLog:(NSString*)logString;
+ */
+
+@protocol AFHTTPRequestOperationLoggerDelegate
+
+/**
+ Method called on delegate whenever a request operation should be logged.
+ @param logString the String that will be logged, content depends on AFHTTPRequestLoggerLevel
+ */
+
+@required -(void)AFHTTPRequestOperationLoggerLog:(NSString*)logString;
+
+@end
+
 /**
  `AFHTTPRequestOperationLogger` logs requests and responses made by AFNetworking, with an adjustable level of detail.
  
  Applications should enable the shared instance of `AFHTTPRequestOperationLogger` in `AppDelegate -application:didFinishLaunchingWithOptions:`:
-
-        [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
+ 
+ [[AFHTTPRequestOperationLogger sharedLogger] startLogging];
  
  `AFHTTPRequestOperationLogger` listens for `AFNetworkingOperationDidStartNotification` and `AFNetworkingOperationDidFinishNotification` notifications, which are posted by AFNetworking as request operations are started and finish. For further customization of logging output, users are encouraged to implement desired functionality by listening for these notifications.
  */
+
 @interface AFHTTPRequestOperationLogger : NSObject
 
 /**
@@ -51,6 +68,11 @@ typedef NS_ENUM(NSUInteger, AFHTTPRequestLoggerLevel) {
  Only log operations conforming to the specified predicate, if specified. `nil` by default.
  */
 @property (nonatomic, strong) NSPredicate *filterPredicate;
+
+/**
+ Set a delegate to inform instead of logging to console. `nil` by default.
+ */
+@property (nonatomic, strong) id<AFHTTPRequestOperationLoggerDelegate> delegate;
 
 /**
  Returns the shared logger instance.
